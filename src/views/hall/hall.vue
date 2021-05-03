@@ -1,5 +1,5 @@
 <template>
-  <div class="hall-container">
+  <div class="hall-container" v-loading="loading">
     <el-card class="box-card">
       <el-form
         ref="form"
@@ -8,7 +8,7 @@
         label-width="80px"
         class="text item"
       >
-        <el-form-item label="放映厅名称">
+        <el-form-item label="放映厅">
           <el-input v-model="searchParams.name" />
         </el-form-item>
         <el-button type="primary" @click="onSearch">搜索</el-button>
@@ -68,6 +68,7 @@ export default {
     return {
       list: [],
       page: {},
+      loading: false,
       searchParams: {
         name: ""
       },
@@ -90,11 +91,13 @@ export default {
   },
   methods: {
     getDataList() {
+      this.loading = true;
       this.$store.dispatch("hall/list", this.searchParams).then(() => {
         this.list = this.hallList;
         this.page.currentPage = this.pagination.currentPage;
         this.page.pageSize = this.pagination.pageSize;
         this.page.total = this.pagination.total;
+        this.loading = false;
       });
     },
     onSearch() {

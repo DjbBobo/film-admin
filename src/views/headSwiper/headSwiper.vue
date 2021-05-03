@@ -1,5 +1,5 @@
 <template>
-  <div class="headSwiper-container">
+  <div class="headSwiper-container" v-loading="loading">
     <el-card class="box-card">
       <el-form
         ref="form"
@@ -28,8 +28,8 @@
       </el-row>
       <br />
       <el-table :data="list" border style="width: 100%">
-        <el-table-column prop="imageUrl" label="图片Url" width="180" />
-        <el-table-column prop="redirectUrl" label="重定向Url" width="180" />
+        <el-table-column prop="imageUrl" label="图片Url" width="300" show-overflow-tooltip />
+        <el-table-column prop="redirectUrl" label="重定向Url" width="300" show-overflow-tooltip />
         <el-table-column align="center" prop="sort" label="排序" width="180" />
         <el-table-column
           align="center"
@@ -82,6 +82,7 @@ export default {
     return {
       list: [],
       page: {},
+      loading: false,
       searchParams: {
         name: ""
       },
@@ -106,11 +107,14 @@ export default {
   },
   methods: {
     getDataList() {
+      this.loading = true;
       this.$store.dispatch("headSwiper/list", this.searchParams).then(() => {
         this.list = this.headSwiperList;
         this.page.currentPage = this.pagination.currentPage;
         this.page.pageSize = this.pagination.pageSize;
         this.page.total = this.pagination.total;
+
+        this.loading = false;
       });
     },
     onSearch() {

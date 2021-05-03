@@ -1,5 +1,5 @@
 <template>
-  <div class="mainSwiper-container">
+  <div class="mainSwiper-container" v-loading="loading">
     <el-card class="box-card">
       <el-form
         ref="form"
@@ -82,6 +82,7 @@ export default {
     return {
       list: [],
       page: {},
+      loading: false,
       searchParams: {
         name: ""
       },
@@ -104,11 +105,14 @@ export default {
   },
   methods: {
     getDataList() {
+      this.loading = true;
       this.$store.dispatch("mainSwiper/list", this.searchParams).then(() => {
         this.list = this.mainSwiperList;
         this.page.currentPage = this.pagination.currentPage;
         this.page.pageSize = this.pagination.pageSize;
         this.page.total = this.pagination.total;
+
+        this.loading = false;
       });
     },
     onSearch() {

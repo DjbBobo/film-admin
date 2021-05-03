@@ -1,5 +1,5 @@
 <template>
-  <div class="film-container">
+  <div class="film-container" v-loading="loading">
     <el-card class="box-card">
       <el-form
         ref="form"
@@ -23,15 +23,14 @@
       <br />
       <el-table :data="list" border style="width: 100%">
         <el-table-column prop="name" label="电影名称" width="180" />
-        <el-table-column prop="image" label="海报" />
-        <el-table-column prop="brief" label="简介" />
-        <el-table-column prop="releaseTime" label="发布时间" />
+        <el-table-column prop="image" label="海报" show-overflow-tooltip />
+        <el-table-column prop="brief" label="简介" show-overflow-tooltip />
+        <el-table-column prop="releaseTime" label="发布时间" :formatter="formatterTime" />
         <el-table-column prop="releasePlace" label="发布地点" />
-        <el-table-column prop="filmType" label="类型" />
+        <el-table-column prop="filmType" label="类型" show-overflow-tooltip />
         <el-table-column prop="duration" label="时长" />
-        <el-table-column prop="price" label="票价" />
         <el-table-column prop="score" label="评分" />
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -75,6 +74,7 @@ export default {
     return {
       list: [],
       page: {},
+      loading: false,
       searchParams: {
         name: ""
       },
@@ -86,7 +86,7 @@ export default {
         releasePlace: "",
         filmType: "",
         duration: "",
-        price: "",
+        // price: "",
         score: ""
       },
       dialogVisible: false,
@@ -104,11 +104,13 @@ export default {
   },
   methods: {
     getDataList() {
+      this.loading = true;
       this.$store.dispatch("film/page", this.searchParams).then(() => {
         this.list = this.filmList;
         this.page.currentPage = this.pagination.currentPage;
         this.page.pageSize = this.pagination.pageSize;
         this.page.total = this.pagination.total;
+        this.loading = false;
       });
     },
     onSearch() {
@@ -153,6 +155,14 @@ export default {
     handleSizeChange(size) {
       this.searchParams.size = size;
       this.getDataList();
+    },
+    formatterTime(row, column) {
+      // return row.releaseTime.substr(0, row.releaseTime.length - 3);
+      let date = new Date(row.releaseTime);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return year + "-" + month + "-" + day;
     }
   }
 };

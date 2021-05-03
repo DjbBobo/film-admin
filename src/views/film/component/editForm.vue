@@ -11,9 +11,15 @@
         <el-input v-model="formData.brief"></el-input>
       </el-form-item>
       <el-form-item label="发布时间">
-        <el-input v-model="formData.releaseTime"></el-input>
+        <!-- <el-input v-model="formData.releaseTime"></el-input> -->
+        <el-date-picker
+          v-model="formData.releaseTime"
+          type="date"
+          placeholder="选择日期"
+          value-format="yyyy-MM-dd HH:mm:ss"
+        ></el-date-picker>
       </el-form-item>
-      <el-form-item label="发布递点">
+      <el-form-item label="发布地点">
         <el-input v-model="formData.releasePlace"></el-input>
       </el-form-item>
       <el-form-item label="电影类型">
@@ -22,9 +28,9 @@
       <el-form-item label="时长">
         <el-input v-model="formData.duration"></el-input>
       </el-form-item>
-      <el-form-item label="票价">
+      <!-- <el-form-item label="票价">
         <el-input v-model="formData.price"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
         <el-button @click="onCancel">取消</el-button>
@@ -61,8 +67,8 @@ export default {
         releaseTime: "",
         releasePlace: "",
         filmType: "",
-        duration: "",
-        price: ""
+        duration: ""
+        // price: ""
       }
     };
   },

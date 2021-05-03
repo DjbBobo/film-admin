@@ -1,7 +1,7 @@
 <template>
   <div class="edit-form-container">
     <el-form ref="form" v-model="formData" label-width="80px">
-      <el-form-item label="放映厅名称">
+      <el-form-item label="放映厅">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
       <el-form-item label="类型">

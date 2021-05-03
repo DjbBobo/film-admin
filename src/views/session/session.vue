@@ -1,5 +1,5 @@
 <template>
-  <div class="session-container">
+  <div class="session-container" v-loading="loading">
     <el-card class="box-card">
       <el-form
         ref="form"
@@ -9,7 +9,10 @@
         class="text item"
       >
         <el-form-item label="影院名称">
-          <el-input v-model="searchParams.name" />
+          <el-input v-model="searchParams.likeCinemaName" />
+        </el-form-item>
+        <el-form-item label="电影名称">
+          <el-input v-model="searchParams.likeFilmName" />
         </el-form-item>
         <el-button type="primary" @click="onSearch">搜索</el-button>
         <el-button type="info" @click="resetForm">重置</el-button>
@@ -22,8 +25,12 @@
       </el-row>
       <br />
       <el-table :data="list" border style="width: 100%">
-        <el-table-column prop="name" label="影院名称" width="180" />
-        <el-table-column prop="districtDetail" label="详细地点" />
+        <el-table-column prop="cinemaName" label="影院名称" width="180" />
+        <el-table-column prop="filmName" label="电影名称" />
+        <el-table-column prop="hallName" label="放映厅" />
+        <el-table-column prop="sessionStartTime" label="播出时间" :formatter="formatterStartTime" />
+        <el-table-column prop="sessionEndTime" label="结束时间" :formatter="formatterEndTime" />
+        <el-table-column prop="price" label="价格" />
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
@@ -68,8 +75,10 @@ export default {
     return {
       list: [],
       page: {},
+      loading: false,
       searchParams: {
-        name: ""
+        likeCinemaName: "",
+        likeFilmName: ""
       },
       formParams: {
         name: "",
@@ -93,11 +102,14 @@ export default {
   },
   methods: {
     getDataList() {
+      this.loading = true;
       this.$store.dispatch("session/list", this.searchParams).then(() => {
         this.list = this.sessionList;
         this.page.currentPage = this.pagination.currentPage;
         this.page.pageSize = this.pagination.pageSize;
         this.page.total = this.pagination.total;
+
+        this.loading = false;
       });
     },
     onSearch() {
@@ -116,9 +128,15 @@ export default {
       this.toogleDialog();
     },
     handleUpdate(index, row) {
-      this.formParams.id = row.id;
-      this.formParams.name = row.name;
-      this.formParams.districtDetail = row.districtDetail;
+      this.formParams = {};
+      // this.formParams.id = row.id;
+      // this.formParams.cinemaName = row.cinemaName;
+      // this.formParams.filmName = row.filmName;
+      // this.formParams.hallName = row.hallName;
+      // this.formParams.sessionStartTime = row.sessionStartTime;
+      // this.formParams.sessionEndTime = row.sessionEndTime;
+      // this.formParams.price = row.price;
+      this.formParams = JSON.parse(JSON.stringify(row));
       this.operationType = "update";
       this.toogleDialog();
     },
@@ -144,6 +162,12 @@ export default {
     handleSizeChange(size) {
       this.searchParams.size = size;
       this.getDataList();
+    },
+    formatterStartTime(row, column) {
+      return row.sessionStartTime.substr(0, row.sessionStartTime.length - 3);
+    },
+    formatterEndTime(row, column) {
+      return row.sessionEndTime.substr(0, row.sessionEndTime.length - 3);
     }
   }
 };

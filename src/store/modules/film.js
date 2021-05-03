@@ -22,7 +22,7 @@ const mutations = {
 
 const actions = {
     async page({ commit }, data) {
-        const filmListResp = await filmApi.list(data)
+        const filmListResp = await filmApi.page(data)
         commit('SET_LIST', filmListResp.data.records)
         commit('SET_PAGINATION', filmListResp.data)
     },
