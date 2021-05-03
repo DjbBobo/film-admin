@@ -69,6 +69,11 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (this.formData.position == "1") {
+        this.formData.type = "1";
+      } else if (this.formData.position == "2") {
+        this.formData.type = "2";
+      }
       this.$store
         .dispatch("mainSwiper/" + this.operationType, this.formData)
         .then(res => {
