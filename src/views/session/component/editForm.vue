@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-form-container">
+  <div class="edit-form-container" v-loading="loading">
     <el-form ref="form" v-model="formData" label-width="80px">
       <el-form-item label="影院名称">
         <el-autocomplete
@@ -99,9 +99,11 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.loading = true;
       this.$store
         .dispatch("session/" + this.operationType, this.formData)
         .then(res => {
+          this.loading = false;
           this.$message({
             message: this.operationType == "save" ? "新增成功" : "修改成功",
             type: "success"
