@@ -12,6 +12,7 @@ import session from './modules/session'
 import headSwiper from './modules/headSwiper'
 import mainSwiper from './modules/mainSwiper'
 import district from './modules/district'
+import seat from './modules/seat'
 
 Vue.use(Vuex)
 
@@ -27,7 +28,8 @@ const store = new Vuex.Store({
     session,
     headSwiper,
     mainSwiper,
-    district
+    district,
+    seat
   },
   getters
 })

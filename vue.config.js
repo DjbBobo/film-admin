@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title || '' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -38,8 +38,9 @@ module.exports = {
     },
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
-      '/admin': {
-        target: `http://localhost:8082/`,
+      '/': {
+        target: `http://localhost:8082`,
+        // target: `http://118.31.36.123:8082`,
         changeOrigin: true,
         pathRewrite: {
         }

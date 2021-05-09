@@ -73,6 +73,14 @@ export const constantRoutes = [{
       meta: {
         title: '场次管理',
       }
+    },
+    {
+      path: 'seat',
+      name: 'seat',
+      component: () => import('@/views/seat/seat'),
+      meta: {
+        title: '座位管理',
+      }
     }]
 },
 {
